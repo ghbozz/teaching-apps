@@ -10,7 +10,7 @@ export default class extends Controller {
 
     const person: Person = {
       name: 'John',
-      age: '30',
+      age: 30,
       email: 'john@gmail.com'
     }
 
