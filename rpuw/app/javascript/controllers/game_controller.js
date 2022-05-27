@@ -1,10 +1,8 @@
 import { Controller } from '@hotwired/stimulus';
-
-// Connects to data-controller="game"
+import { post } from '@rails/request.js';
 export default class extends Controller {
 	static values = {
 		gameId: Number,
-		questionId: Number,
 		participantId: Number,
 	};
 
@@ -14,21 +12,17 @@ export default class extends Controller {
 			.getAttribute('content');
 	}
 
-	async answer({ params }) {
+	answer({ params }) {
 		const formData = new FormData();
 		formData.append('answer_id', params.answerId);
 		formData.append('participant_id', this.participantIdValue);
-		formData.append('question_id', this.questionIdValue);
+		formData.append('question_id', params.questionId);
 
 		const options = {
-			method: 'POST',
-			headers: { Accept: 'application/json', 'X-CSRF-Token': this.csrfToken },
 			body: formData,
+			responseKind: 'turbo-stream',
 		};
 
-		const response = await fetch(`/games/${this.gameIdValue}/answer`, options);
-		const json = await response.json();
-
-		console.log(json);
+		post(`/games/${this.gameIdValue}/answer`, options);
 	}
 }

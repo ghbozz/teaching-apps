@@ -1,0 +1,16 @@
+<%= turbo_frame_tag :question do %>
+  <h3><%= question.content %></h3>
+
+  <div class="row">
+    <% question.answers.each do |answer| %>
+      <div class="col-6">
+        <p data-action="click->game#answer" 
+          data-game-answer-id-param="<%= answer.id %>"
+          data-game-question-id-param="<%= question.id %>">
+
+          <%= answer.content %>
+        </p>
+      </div>
+    <% end %>
+  </div>
+<% end %>

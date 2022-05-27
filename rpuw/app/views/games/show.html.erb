@@ -1,22 +1,9 @@
 <div class="container d-flex justify-content-center align-items-center" 
-     data-controller="game" 
-     data-game-question-id-value="<%= @game.questions.first.id %>"
-     data-game-game-id-value="<%= @game.id %>"
-     data-game-participant-id-value="<%= current_user.id %>">
+    data-controller="game" 
+    data-game-game-id-value="<%= @game.id %>"
+    data-game-participant-id-value="<%= current_user.id %>">
 
-  <div data-game-target="question">
-    <h3><%= @game.questions.first.content %></h3>
-
-    <div class="row">
-      <% @game.questions.first.answers.each do |answer| %>
-        <div class="col-6">
-          <p data-action="click->game#answer" 
-             data-game-answer-id-param="<%= answer.id %>">
-             
-             <%= answer.content %>
-          </p>
-        </div>
-      <% end %>
-    </div>
+  <div>
+    <%= render 'games/question', question: @question %>
   </div>
 </div>
