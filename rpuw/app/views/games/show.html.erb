@@ -1,9 +1,11 @@
+<%= turbo_stream_from @game %>
+
 <div class="container d-flex justify-content-center align-items-center" 
     data-controller="game" 
     data-game-game-id-value="<%= @game.id %>"
     data-game-participant-id-value="<%= current_user.id %>">
 
-  <div>
-    <%= render 'games/question', question: @question %>
+  <div id="<%= dom_id(@game) %>">
+    <%= render 'games/question', question: @question, game: @game, participant: nil %>
   </div>
 </div>

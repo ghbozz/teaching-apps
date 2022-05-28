@@ -1,4 +1,4 @@
-<%= turbo_frame_tag :question do %>
+<%= turbo_frame_tag do %>
   <h3><%= question.content %></h3>
 
   <div class="row">
@@ -13,4 +13,8 @@
       </div>
     <% end %>
   </div>
+
+  <% if participant.present? %>
+    <h2>Great response from <%= participant.username %></h2>
+  <% end %>
 <% end %>
