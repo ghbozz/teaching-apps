@@ -1,6 +1,7 @@
 <%= turbo_stream_from @game %>
+<%= turbo_stream_from current_user %>
 
-<div class="container d-flex justify-content-center align-items-center" 
+<div class="container d-flex justify-content-center align-items-center flex-column"
     data-controller="game" 
     data-game-game-id-value="<%= @game.id %>"
     data-game-participant-id-value="<%= current_user.id %>">
@@ -17,5 +18,7 @@
     <% else %>
       <%= render 'games/question', question: @question, game: @game, participant: nil %>
     <% end %>
+
+    <div id="answer"></div>
   </div>
 </div>

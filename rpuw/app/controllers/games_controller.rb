@@ -28,6 +28,8 @@ class GamesController < ApplicationController
       @game.question_number += 1
       @game.save
       broadcast_next_question unless @game.last_question?(@question)
+    else
+      broadcast_invlad_answer
     end
   end
 
@@ -67,5 +69,11 @@ class GamesController < ApplicationController
       locals: {
         participations: @game.user_games,
       }
+  end
+
+  def broadcast_invlad_answer
+    Turbo::StreamsChannel.broadcast_update_to current_user,
+      target: "answer",
+      partial: "games/invalid_answer"
   end
 end
