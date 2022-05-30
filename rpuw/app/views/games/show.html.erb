@@ -6,6 +6,11 @@
     data-game-participant-id-value="<%= current_user.id %>">
 
   <div id="<%= dom_id(@game) %>">
-    <%= render 'games/question', question: @question, game: @game, participant: nil %>
+    <% if @game.lobby? %>
+      <h3>Waiting for players</h3>
+      <%= link_to "Start Game", start_game_path, data: { turbo_method: :post } %>
+    <% else %>
+      <%= render 'games/question', question: @question, game: @game, participant: nil %>
+    <% end %>
   </div>
 </div>

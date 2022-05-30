@@ -11,4 +11,8 @@ class Game < ApplicationRecord
   def last_question?(question)
     questions.last == question
   end
+
+  def lobby?
+    status == "lobby"
+  end
 end

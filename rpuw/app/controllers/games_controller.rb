@@ -4,12 +4,8 @@ class GamesController < ApplicationController
     @question = @game.questions.first
   end
 
-  def new
-    @game = Game.new
-  end
-
   def create
-    @game = Game.new(participant_ids: params.dig(:game, :participant_ids))
+    @game = Game.new
     @game.questions = Question.all.sample(3)
     @game.save
     redirect_to game_path(@game)
@@ -25,6 +21,22 @@ class GamesController < ApplicationController
     if @answer.correct?
       broadcast_next_question unless @game.last_question?(@question)
     end
+  end
+
+  def start
+    @game = Game.find(params[:id])
+    @question = @game.questions.first
+    @game.update(status: "started", current_question_id: @question.id)
+    
+
+    Turbo::StreamsChannel.broadcast_update_to @game,
+      target: "game_#{@game.id}", 
+      partial: "games/question",
+      locals: {
+        game: @game,
+        question: @question,
+        participant: nil
+      }
   end
 
   private 
