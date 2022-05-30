@@ -1,0 +1,8 @@
+<% participations.each do |participation| %>
+  <%= participation.user.username %>
+  <% unless participation.status == "ready" %>
+    <%= link_to "Ready", ready_user_game_path(participation), data: { turbo_method: :post } %>
+  <% else %>
+    V
+  <% end %>
+<% end %>

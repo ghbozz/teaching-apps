@@ -8,4 +8,10 @@ Rails.application.routes.draw do
       post 'start'
     end
   end
+
+  resources :user_games, only: [] do
+    member do
+      post "ready"
+    end
+  end
 end

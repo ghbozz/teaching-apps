@@ -1,7 +1,13 @@
 class GamesController < ApplicationController
   def show
     @game = Game.find(params[:id])
-    @question = @game.questions.first
+    @question = @game.questions[@game.question_number]
+
+    unless @game.participants.include?(current_user)
+      UserGame.create(user: current_user, game: @game, status: "joined")
+    end
+
+    display_players if @game.lobby?
   end
 
   def create
@@ -19,6 +25,8 @@ class GamesController < ApplicationController
     @next_question = @game.next_question(@question)
 
     if @answer.correct?
+      @game.question_number += 1
+      @game.save
       broadcast_next_question unless @game.last_question?(@question)
     end
   end
@@ -49,6 +57,15 @@ class GamesController < ApplicationController
         game: @game, 
         question: @next_question,
         participant: @participant
+      }
+  end
+
+  def display_players
+    Turbo::StreamsChannel.broadcast_update_to @game,
+      target: "players",
+      partial: "games/players",
+      locals: {
+        participations: @game.user_games,
       }
   end
 end
